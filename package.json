@@ -1,0 +1,26 @@
+{
+  "name": "uxpilot-extractor",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "clear-outputs": "bun run src/scripts/clear-outputs.ts",
+    "list-designs": "bun run src/scripts/list-designs.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "chalk": "^5.6.0",
+    "consola": "^3.4.2",
+    "date-fns": "^4.1.0",
+    "fast-escape-html": "^1.1.0",
+    "playwright": "^1.54.2",
+    "pretty-bytes": "^7.0.1",
+    "yocto-spinner": "^1.0.0"
+  }
+}
