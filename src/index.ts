@@ -75,7 +75,7 @@ const [htmlOutputPath, jsonOutputPath] = generateOutputFilePaths(uxPilotUrl);
 
 consola.log("💾 Writing to files...");
 
-const htmlWritePromise = Bun.write(htmlOutputPath, unescapedHtml);
+const htmlWritePromise = Bun.write(htmlOutputPath, `<!DOCTYPE html>${unescapedHtml}`);
 const jsonWritePromise = Bun.write(jsonOutputPath, computedStylesJson);
 
 const [htmlWriteBytes, jsonWriteBytes] = await Promise.all([
