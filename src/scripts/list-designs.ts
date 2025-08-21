@@ -1,5 +1,6 @@
 import { createConsola } from "consola";
-import { readdir, stat } from "fs/promises";
+import { readdir, stat, mkdir } from "fs/promises";
+import { existsSync } from "fs";
 import path from "path";
 import config from "config";
 import chalk from "chalk";
@@ -29,6 +30,17 @@ async function getDesignFiles(): Promise<DesignFile[]> {
   const files: DesignFile[] = [];
 
   try {
+    // Ensure directories exist
+    if (!existsSync(htmlDir)) {
+      await mkdir(htmlDir, { recursive: true });
+      consola.info(`Created HTML output directory: ${htmlDir}`);
+    }
+
+    if (!existsSync(jsonDir)) {
+      await mkdir(jsonDir, { recursive: true });
+      consola.info(`Created JSON output directory: ${jsonDir}`);
+    }
+
     // Get HTML files
     const htmlFiles = await readdir(htmlDir);
 
@@ -210,7 +222,7 @@ function formatTable(groups: Map<string, DesignFile[]>): void {
     }
   }
 
-  consola.log("\n" + chalk.dim('Use "bun run clear" to delete all outputs'));
+  consola.log("\n" + chalk.dim('Use "bun run clear-outputs" to delete all outputs'));
 }
 
 async function main() {
@@ -218,6 +230,12 @@ async function main() {
 
   const files = await getDesignFiles();
   const groups = groupByDesign(files);
+
+  if (files.length === 0) {
+    consola.info("No extracted designs found yet.");
+    consola.info("Run the extraction process first to generate HTML and JSON files.");
+    return;
+  }
 
   formatTable(groups);
 }
